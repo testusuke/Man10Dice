@@ -1,6 +1,7 @@
 package net.testusuke.open.man10dice
 
 import net.testusuke.open.man10dice.Main.Companion.plugin
+import org.apache.commons.lang.math.NumberUtils
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -31,7 +32,7 @@ object Command:CommandExecutor {
         when(args[0]){
             "r" -> {
                 if(!sender.hasPermission(adminPermission))return false
-                var r:Int = 0
+                var r:Int
                 try {
                     r = args[1].toInt()
                 }catch (e:NumberFormatException){
@@ -105,7 +106,8 @@ object Command:CommandExecutor {
     }
 
     private fun canDice(args: Array<out String>,sender: Player,start:Int):Boolean{
-        if(args.size == 1){
+        val max = start + 1
+        if(args.size == max){
             sendDiceRule(sender)
             return false
         }
@@ -125,7 +127,7 @@ object Command:CommandExecutor {
      * @return true 正常  false エラー
      */
     private fun checkNumber(s: String): Boolean {
-        return Pattern.matches("^[0-9]*\$",s)
+        return NumberUtils.isNumber(s)
     }
 
     //  Diceの不正利用
