@@ -6,6 +6,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitRunnable
 import java.lang.NumberFormatException
 import java.util.concurrent.ThreadLocalRandom
 import java.util.regex.Pattern
@@ -46,7 +47,7 @@ object Command:CommandExecutor {
             }
             "help" -> sendHelp(sender)
             "local" -> {
-                if(!canDice(args,sender))return false
+                if(!canDice(args,sender,1))return false
                 val dice:Int
                 //  Int check
                 try {
@@ -59,7 +60,7 @@ object Command:CommandExecutor {
                 runDice(DiceType.LOCAL,dice,sender)
             }
             "global" -> {
-                if(!canDice(args,sender))return false
+                if(!canDice(args,sender,1))return false
                 val dice:Int
                 //  Int check
                 try {
@@ -72,11 +73,11 @@ object Command:CommandExecutor {
                 runDice(DiceType.GLOBAL,dice,sender)
             }
             else -> {
-                if(!canDice(args,sender))return false
+                if(!canDice(args,sender,0))return false
                 val dice:Int
                 //  Int check
                 try {
-                    dice = args[1].toInt()
+                    dice = args[0].toInt()
                 }catch (e:NumberFormatException){
                     sendDiceRule(sender)
                     return false
@@ -103,13 +104,13 @@ object Command:CommandExecutor {
         player.sendMessage(helpMessage)
     }
 
-    private fun canDice(args: Array<out String>,sender: Player):Boolean{
+    private fun canDice(args: Array<out String>,sender: Player,start:Int):Boolean{
         if(args.size == 1){
             sendDiceRule(sender)
             return false
         }
         //  正規表現
-        if(!checkNumber(args[1])){
+        if(!checkNumber(args[start])){
             sendDiceRule(sender)
             return false
         }
