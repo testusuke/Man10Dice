@@ -12,7 +12,7 @@ class Main: JavaPlugin() {
 
     var prefix = "§e[§dMan10§bDice§e]§f"
     val pluginName = "Man10Dice"
-    val version = "1.0.1"
+    val version = "1.0.3"
 
     //  local
     var radius:Int = 50

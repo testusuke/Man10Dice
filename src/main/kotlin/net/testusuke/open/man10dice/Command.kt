@@ -27,6 +27,7 @@ object Command:CommandExecutor {
 
         if(args.isEmpty()){
             sendHelp(sender)
+            return false
         }
 
         when(args[0]){
